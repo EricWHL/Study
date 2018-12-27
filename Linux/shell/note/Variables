@@ -1,0 +1,40 @@
+------------------------------------------------------------------------------------------------------
+|  Environment Variable      |  Description                                                          |
+------------------------------------------------------------------------------------------------------
+|  $HOME                        The home directory of the current user                               |
+------------------------------------------------------------------------------------------------------
+|  $PATH                        A colon-separated list of directories of search for commands.        |
+------------------------------------------------------------------------------------------------------
+|  $PS1                         A Command prompt,frequently $,but in bash you can use some           |
+|                               more complex values;for example, the string [\u@\h \W]$ is a         |
+|                               popular default that tells you the user,machine name,and current     |
+|                               directory, as well as giving a $ prompt.                             |
+------------------------------------------------------------------------------------------------------
+|  $PS2                         A secondary prompt,used when prompting for additional input;         |
+|                               usually >.                                                           |
+------------------------------------------------------------------------------------------------------
+|  $IFS                         An input field separator;a list of characters that are used to       |
+|                               separate words when the shell is reading input,usually space,tab,    |
+|                               and newline characters.                                              |
+------------------------------------------------------------------------------------------------------
+|  $0                           The name of the shell script                                         |
+------------------------------------------------------------------------------------------------------
+|  $#                           The number of the shell parameters passed.                           |
+------------------------------------------------------------------------------------------------------
+|  $$                           The process ID of the shell script,often used inside a script for    |
+|                               generating unique temporary filenames;for example                    |
+|                               /tmp/tmpfile_$$                                                      |
+------------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------------
+|  Parameter Variable        |  Description                                                          |
+------------------------------------------------------------------------------------------------------
+|  $1, $2, ...                  The parameters given to the script                                   |
+------------------------------------------------------------------------------------------------------
+|  $*                           A list of all the parameters,in a signle variable,separated by the   |
+|                               first character in the environment variable IFS.                     |
+------------------------------------------------------------------------------------------------------
+|  $@                           A subtle variation on $*; it doesn't use the IFS environment variable|
+|                               so parameters may be run together if IFS is empty.                   |
+------------------------------------------------------------------------------------------------------
