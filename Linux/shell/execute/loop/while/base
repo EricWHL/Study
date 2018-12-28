@@ -1,0 +1,16 @@
+#!/bin/bash
+#The while format
+#while condition do
+#    statement
+#done
+
+echo "Enter password"
+
+read trythis
+
+while [ "$trythis" != "aa" ]; do
+    echo "sorry, try again"
+    read trythis
+done
+
+exit 0

@@ -1,0 +1,13 @@
+#!/bin/bash
+#The for structures
+# for variable in values
+# do 
+#   statements
+# done
+
+for foo in a b c
+do
+    echo $foo
+done
+
+           
