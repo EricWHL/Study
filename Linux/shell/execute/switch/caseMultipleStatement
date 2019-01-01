@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#case format
+#
+#case variable in
+#  pattern [ | pattern] ...) statements;;
+#  pattern [ | pattern] ...) statements;;
+#  ...
+#esac
+
+echo "Is it morning? Please answer yes or no"
+read time
+
+case "$time" in
+    yes | y | YES | Yes)
+    echo "good morning"
+    ;;
+    [nN]*)
+    echo "good afternoon"
+    ;;
+    *)
+    echo "Sorry, answer not recognized"
+    ;;
+esac
+
+exit 0

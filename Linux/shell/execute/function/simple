@@ -1,0 +1,13 @@
+#!/bin/bash
+#function format
+#function_name() {
+#    statement
+#}
+
+foo () {
+echo "Function foo is executing"
+}
+
+echo "script start"
+foo
+echo "script ended"
