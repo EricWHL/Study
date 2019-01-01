@@ -1,0 +1,26 @@
+#!/bin/sh
+
+yes_or_no() {
+    echo "Is your name $* ?"
+    while true
+    do
+        echo -n "Enter yes or no:"
+        read x
+        case "$x" in
+            [Yy]*) return 0;;
+            [nN]*) return 1;;
+            *) echo "answer yes or no"
+        esac
+    done
+    
+}
+
+echo "original parameters are $*"
+
+if yes_or_no "$1"
+then
+    echo "Hi $1, nice name"
+else
+    echo "Never mind"
+fi
+exit 0

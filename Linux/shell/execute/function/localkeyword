@@ -1,0 +1,19 @@
+#!/bin/sh
+
+text="global variable"
+
+foo() {
+    local text="local variable"
+    echo "function is executing"
+    echo $text
+}
+
+echo "script starting"
+echo "$text"
+
+foo
+
+echo "script ended"
+echo "$text"
+
+exit 0
