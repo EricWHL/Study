@@ -1,0 +1,165 @@
+---------------------------------
+|File descriptors               |
+---------------------------------
+0:standard input
+1:standard output
+2:standard error
+
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+----------------
+|  write       |
+----------------
+
+#include <unistd.h>
+
+size_t write(int fildes, const void *buf, size_t nbytes);
+
+----------------
+|  read        |
+----------------
+
+#include <unistd.h>
+
+size_t read(int fildes, void *buf, size_t nbytes);
+
+----------------
+|  open        |
+----------------
+
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+int open(const char *path, int oflags);
+int open(const char *path, int oflags, mode_t mode);
+
+For example:
+
+open ("myfile", O_CREAT, S_IRUSR|S_IXOTH);
+
+--------------------------------------------------------------------------------------------
+|  Flag      |  Description                                                                |
+--------------------------------------------------------------------------------------------
+|  O_RDONLY     Open for read-only                                                         |
+--------------------------------------------------------------------------------------------
+|  O_WRONLY     Open for write-only                                                        |
+--------------------------------------------------------------------------------------------
+|  O_RDWR       Open for reading and writing                                               |
+--------------------------------------------------------------------------------------------
+|  O_APPEND     Place written data at the end of the file.                                 |
+--------------------------------------------------------------------------------------------
+|  O_TRUNC      Set the length of the file to zero, discarding existing contents.          |
+--------------------------------------------------------------------------------------------
+|  O_CREAT      Creates the file, if necessary, with permissions given in mode .           |
+--------------------------------------------------------------------------------------------
+|  O_EXCL       Used with O_CREAT, ensures that the caller creates the file.               |
+|               The open is atomic; that is,it’s performed with just one function call.    |
+|               This protects against two programs creating the file at the same time.     |
+|               If the file already exists, open will fail.                                |
+--------------------------------------------------------------------------------------------
+
+------------------------------------------------
+|  Mode      |  Description                    |
+------------------------------------------------
+|  S_IRUSR      Read permission, owner         |
+------------------------------------------------
+|  S_IWUSR      Write permission, owner        |
+------------------------------------------------
+|  S_IXUSR      Execute permission, owner      |
+------------------------------------------------
+|  S_IRGRP      Read permission, group         |
+------------------------------------------------
+|  S_IWGRP      Write permission, group        |
+------------------------------------------------
+|  S_IXGRP      Execute permission, group      |
+------------------------------------------------
+|  S_IROTH      Read permission, others        |
+------------------------------------------------
+|  S_IWOTH      Write permission, others       |
+------------------------------------------------
+|  S_IXOTH      Execute permission, others     |
+------------------------------------------------
+
+----------------
+|  close       |
+----------------
+
+#include <unistd.h>
+
+int close(int fildes);
+
+----------------
+|  ioctl       |
+----------------
+
+#include <unistd.h>
+
+int ioctl(int fildes, int cmd, ...);
+
+----------------
+|  lseek       |
+----------------
+
+#include <unistd.h>
+#include <sys/types.h>
+
+off_t lseek(int fildes, off_t offset, int whence);
+
+------------------------------------------------------------------
+|  offset      |  Description                                    |
+------------------------------------------------------------------
+|  SEEK_SET       offset is an absolute position                 |
+------------------------------------------------------------------
+|  SEEK_CUR       offset is relative to the current position     |
+------------------------------------------------------------------
+|  SEEK_END       offset is relative to the end of the file      |
+------------------------------------------------------------------
+
+--------------------------------
+|  fstat   stat    lstat       |
+--------------------------------
+
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+int fstat(int fildes, struct stat *buf);
+int stat(const char *path, struct stat *buf);
+int lstat(const char *path, struct stat *buf);
+
+------------------------------------------------------------------------------------------------
+|Stat Member     | Description                                                                 |
+------------------------------------------------------------------------------------------------
+|st_mode           File permissions and file-type information                                  |
+------------------------------------------------------------------------------------------------
+|st_ino            The inode associated with the file                                          |
+------------------------------------------------------------------------------------------------
+|st_dev            The device the file resides on                                              |
+------------------------------------------------------------------------------------------------
+|st_uid            The user identity of the file owner                                         |
+------------------------------------------------------------------------------------------------
+|st_gid            The group identity of the file owner                                        |
+------------------------------------------------------------------------------------------------
+|st_atime          The time of last access                                                     |
+------------------------------------------------------------------------------------------------
+|st_ctime          The time of last change to permissions, owner, group, or content            |
+------------------------------------------------------------------------------------------------
+|st_mtime          The time of last modification to contents                                   |
+------------------------------------------------------------------------------------------------
+|st_nlink          The number of hard links to the file                                        |
+------------------------------------------------------------------------------------------------
+
+
+------------------------
+|  dup      dup2       |
+------------------------
+
+#include <unistd.h>
+
+int dup(int fildes);
+int dup2(int fildes, int fildes2);
+
+
+
