@@ -2,5 +2,59 @@
 |Interface descriptions         |
 ---------------------------------
 ----------------
-|  write       |
+|  fopen       |
 ----------------
+
+#include <stdio.h>
+
+FILE *fopen(const char *filename, const char *mode);
+
+--------------------------------------------------------------------------
+|  Mode                    |  Description                                |
+--------------------------------------------------------------------------
+|  "r" or "rb"                Open for reading only                      |
+--------------------------------------------------------------------------
+|  "w" or "wb"                Open for writing, truncate to zero length  |
+--------------------------------------------------------------------------
+|  "a" or "ab"                Open for writing, append to end of file    |
+--------------------------------------------------------------------------
+|  "r+" or "rb+" or "r+b"     Open for update (reading and writing)      |
+--------------------------------------------------------------------------
+|  "w+" or "wb+" or "w+b"     Open for update, truncate to zero length   |
+--------------------------------------------------------------------------
+|  "a+" or "ab+" or "a+b"     Open for update, append to end of file     |
+--------------------------------------------------------------------------
+
+----------------
+|  fread       |
+----------------
+
+#include <stdio.h>
+
+size_t fread(void *ptr, size_t size, size_t nitems, FILE *stream);
+
+----------------
+|  fwrite      |
+----------------
+
+#include <stdio.h>
+
+size_t fwrite (const void *ptr, size_t size, size_t nitems, FILE *stream);
+
+----------------
+|  fclose      |
+----------------
+
+#include <stdio.h>
+
+int fclose(FILE *stream);
+
+----------------
+|  fflush      |
+----------------
+
+#include <stdio.h>
+
+int fflush(FILE *stream);
+
+
