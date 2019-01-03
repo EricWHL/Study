@@ -108,7 +108,7 @@ int ioctl(int fildes, int cmd, ...);
 off_t lseek(int fildes, off_t offset, int whence);
 
 ------------------------------------------------------------------
-|  offset      |  Description                                    |
+|  Whence      |  Description                                    |
 ------------------------------------------------------------------
 |  SEEK_SET       offset is an absolute position                 |
 ------------------------------------------------------------------

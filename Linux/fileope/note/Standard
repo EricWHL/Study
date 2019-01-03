@@ -1,0 +1,109 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+----------------
+|  fopen       |
+----------------
+
+#include <stdio.h>
+
+FILE *fopen(const char *filename, const char *mode);
+
+--------------------------------------------------------------------------
+|  Mode                    |  Description                                |
+--------------------------------------------------------------------------
+|  "r" or "rb"                Open for reading only                      |
+--------------------------------------------------------------------------
+|  "w" or "wb"                Open for writing, truncate to zero length  |
+--------------------------------------------------------------------------
+|  "a" or "ab"                Open for writing, append to end of file    |
+--------------------------------------------------------------------------
+|  "r+" or "rb+" or "r+b"     Open for update (reading and writing)      |
+--------------------------------------------------------------------------
+|  "w+" or "wb+" or "w+b"     Open for update, truncate to zero length   |
+--------------------------------------------------------------------------
+|  "a+" or "ab+" or "a+b"     Open for update, append to end of file     |
+--------------------------------------------------------------------------
+
+----------------
+|  fread       |
+----------------
+
+#include <stdio.h>
+
+size_t fread(void *ptr, size_t size, size_t nitems, FILE *stream);
+
+----------------
+|  fwrite      |
+----------------
+
+#include <stdio.h>
+
+size_t fwrite (const void *ptr, size_t size, size_t nitems, FILE *stream);
+
+----------------
+|  fclose      |
+----------------
+
+#include <stdio.h>
+
+int fclose(FILE *stream);
+
+----------------
+|  fflush      |
+----------------
+The fflush library function causes all outstanding data on a file stream to be written immediately.
+You can use this to ensure that, for example, an interactive prompt has been sent to a terminal before any attempt to read a response.
+It’s also useful for ensuring that important data has been committed to disk before continuing.
+You can sometimes use it when you’re debugging a program to make sure that the program is writing data and not hanging.
+Note that an implied flush operation is carried out when fclose is called, so you don’t need to call fflush before fclose .
+
+#include <stdio.h>
+
+int fflush(FILE *stream);
+
+----------------
+|  fseek       |
+----------------
+
+#include <stdio.h>
+
+int fseek(FILE *stream, long int offset, int whence);
+
+--------------------------
+|  fgetc  getc  getchar  |
+--------------------------
+The fgetc function returns the next byte, as a character, from a file stream.
+When it reaches the end of the file or there is an error, it returns EOF.
+You must use ferror or feof to distinguish the two cases.
+
+#include <stdio.h>
+
+int fgetc(FILE *stream);
+int getc(FILE *stream);
+int getchar();
+
+--------------------------
+| fputc  putc  putchar   |
+--------------------------
+The fputc function writes a character to an output file stream.
+It returns the value it has written, or EOF on failure.
+
+#include <stdio.h>
+
+int fputc(int c, FILE *stream);
+int putc(int c, FILE *stream);
+int putchar(int c);
+
+-------------------
+| fgets    gets   |
+-------------------
+The fgets function reads a string from an input file stream .
+It writes characters to the string pointed to by s until a newline is encountered, n-1 characters have been transferred, or the end of file is reached, whichever occurs first.
+Any newline encountered is transferred to the receiving string and a terminating null byte, \0 , is added.
+Only a maximum of n-1 characters are transferred in any one call because the null byte must be added to finish the string and make up the n bytes.
+
+#include <stdio.h>
+
+char *fgets(char *s, int n, FILE *stream);
+char *gets(char *s);

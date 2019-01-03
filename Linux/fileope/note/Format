@@ -1,0 +1,66 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+-------------------------------
+|  printf  fprintf   sprintf  |
+-------------------------------
+
+The printf family of functions format and output a variable number of arguments of different types.
+The way each is represented in the output stream is controlled by the format parameter, which is a string that contains ordinary characters to be printed and codes, called conversion specifiers, that indicate how and where the remaining arguments are to be printed.
+
+#include <stdio.h>
+
+int printf(const char *format, ...);
+int sprintf(char *s, const char *format, ...);
+int fprintf(FILE *stream, const char *format, ...);
+
+--------------------------------------------------------------------
+|  Format      |  Description                                      |
+--------------------------------------------------------------------
+|  %d , %i        Print an integer in decimal                      |
+--------------------------------------------------------------------
+|  %o , %x        Print an integer in octal, hexadecimal           |
+--------------------------------------------------------------------
+|  %c             Print a character                                |
+--------------------------------------------------------------------
+|  %s             Print a string                                   |
+--------------------------------------------------------------------
+|  %f             Print a floating point (single precision) number |
+--------------------------------------------------------------------
+|  %e             Print a double precision number, in fixed format |
+--------------------------------------------------------------------
+|  %g             Print a double in a general format               |
+--------------------------------------------------------------------
+
+-------------------------------
+|  scanf    fscanf    sscanf  |
+-------------------------------
+
+The scanf family of functions works in a way similar to the printf group, except that these functions read items from a stream and place values into variables at the addresses they’re passed as pointer parameters.
+They use a format string to control the input conversion in the same way, and many of the conversion specifiers are the same.
+
+#include <stdio.h>
+
+int scanf(const char *format, ...);
+int fscanf(FILE *stream, const char *format, ...);
+int sscanf(const char *s, const char *format, ...);
+
+--------------------------------------------------------------------
+|  Format      |  Description                                      |
+--------------------------------------------------------------------
+|  %d             Scan a decimal integer                           |
+--------------------------------------------------------------------
+|  %o , %x        Scan an octal, hexadecimal integer               |
+--------------------------------------------------------------------
+|  %f , %e , %g   Scan a floating point number                     |
+--------------------------------------------------------------------
+|  %c             Scan a character (whitespace not skipped)        |
+--------------------------------------------------------------------
+|  %s             Scan a string                                    |
+--------------------------------------------------------------------
+|  %[]            Scan a set of characters (see below)             |
+--------------------------------------------------------------------
+|  %%             Scan a % character                               |
+--------------------------------------------------------------------
+
+
