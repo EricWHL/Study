@@ -23,3 +23,36 @@
 |  remove           Equivalent to unlink unless the path parameter is a directory,         |
 |                   in which case it’s equivalent to rmdir.                                |
 --------------------------------------------------------------------------------------------
+
+
+--------------------------
+|   Stream Errors        |
+--------------------------
+
+To indicate an error, many stdio library functions return out-of-range values, such as null pointers or the constant EOF .
+In these cases, the error is indicated in the external variable errno :
+
+#include <errno.h>
+
+extern int errno;
+
+#include <stdio.h>
+
+int ferror(FILE *stream);
+int feof(FILE *stream);
+void clearerr(FILE *stream);
+
+
+-------------------------------------
+|   Streams and File Descriptors    |
+-------------------------------------
+
+Each file stream is associated with a low-level file descriptor.
+You can mix low-level input and output operations with higher-level stream operations, but this is generally unwise, as the effects of buffering can be difficult to predict.
+
+#include <stdio.h>
+
+int fileno(FILE *stream);
+FILE *fdopen(int fildes, const char *mode);
+
+
