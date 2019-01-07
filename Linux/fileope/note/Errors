@@ -1,0 +1,16 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+--------------
+|  strerror  |
+--------------
+
+The strerror function maps an error number into a string describing the type of error that has occurred.
+This can be useful for logging error conditions.
+
+#include <string.h>
+
+char *strerror(int errnum);
+
+
+

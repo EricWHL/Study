@@ -1,0 +1,67 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+-------------
+|  opendir  |
+-------------
+
+The opendir function opens a directory and establishes a directory stream.
+If successful, it returns a pointer to a DIR structure to be used for reading directory entries.
+
+#include <sys/types.h>
+#include <dirent.h>
+
+DIR *opendir(const char *name);
+
+
+-------------
+|  readdir  |
+-------------
+
+The readdir function returns a pointer to a structure detailing the next directory entry in the directory stream dirp .
+Successive calls to readdir return further directory entries.
+On error, and at the end of the directory, readdir returns NULL .
+POSIX-compliant systems leave errno unchanged when returning NULL at end of directory and set it when an error occurs.
+
+
+#include <sys/types.h>
+#include <dirent.h>
+
+struct dirent *readdir(DIR *dirp);
+
+-------------
+|  telldir  |
+-------------
+
+The telldir function returns a value that records the current position in a directory stream.
+You can use this in subsequent calls to seekdir to reset a directory scan to the current position.
+#include <sys/types.h>
+#include <dirent.h>
+
+long int telldir(DIR *dirp);
+
+-------------
+|  seekdir  |
+-------------
+
+The seekdir function sets the directory entry pointer in the directory stream given by dirp.
+The value of loc,used to set the position,should have been obtained from a prior call to telldir.
+
+#include <sys/types.h>
+#include <dirent.h>
+
+void seekdir(DIR *dirp, long int loc);
+
+
+--------------
+|  closedir  |
+--------------
+
+The closedir function closes a directory stream and frees up the resources associated with it.
+It returns 0 on success and 1if there is an error.
+
+#include <sys/types.h>
+#include <dirent.h>
+
+int closedir(DIR *dirp);
+

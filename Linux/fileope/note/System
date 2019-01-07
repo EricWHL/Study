@@ -162,4 +162,82 @@ int dup(int fildes);
 int dup2(int fildes, int fildes2);
 
 
+------------------------
+|  chmod               |
+------------------------
 
+The file specified by path is changed to have the permissions given by mode .
+The modes are specified as in the open system call, a bitwise OR of required permissions.
+Unless the program has been given appropriate privileges, only the owner of the file or a superuser can change its permissions.
+
+#include <sys/stat.h>
+
+int chmod(const char *path, mode_t mode);
+
+------------------------
+|  chown               |
+------------------------
+
+A superuser can change the owner of a file using the chown system call.
+
+#include <unistd.h>
+
+int chown(const char *path, uid_t owner, gid_t group);
+
+----------------------------
+|  unlink  link  symlink   |
+----------------------------
+We can remove a file using unlink .
+The unlink system call removes the directory entry for a file and decrements the link count for it.
+It returns 0 if the unlinking was successful, -1 on an error.
+You must have write and execute permissions in the directory where the file has its directory entry for this call to function.
+
+#include <unistd.h>
+
+int unlink(const char *path);
+int link(const char *path1, const char *path2);
+int symlink(const char *path1, const char *path2);
+
+
+------------------------
+|  mkdir               |
+------------------------
+The mkdir system call is used for creating directories and is the equivalent of the mkdir program.
+mkdir makes a new directory with path as its name.
+The directory permissions are passed in the parameter mode and are given as in the O_CREAT option of the open system call and, again, subject to umask .
+
+#include <sys/stat.h>
+
+int mkdir(const char *path, mode_t mode);
+
+------------------------
+|  rmdir               |
+------------------------
+
+The rmdir system call removes directories, but only if they are empty.
+The rmdir program uses this system call to do its job.
+
+#include <unistd.h>
+
+int rmdir(const char *path);
+
+------------------------
+|  chdir               |
+------------------------
+
+A program can navigate directories in much the same way as a user moves around the file system.
+As we use the cd command in the shell to change directory, so a program can use the chdir system call.
+
+#include <unistd.h>
+
+int chdir(const char *path);
+
+------------------------
+|  getcwd              |
+------------------------
+
+A program can determine its current working directory by calling the getcwd function.
+
+#include <unistd.h>
+
+char *getcwd(char *buf, size_t size);
