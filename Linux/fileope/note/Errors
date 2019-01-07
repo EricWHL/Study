@@ -12,5 +12,21 @@ This can be useful for logging error conditions.
 
 char *strerror(int errnum);
 
+--------------
+|  perror    |
+--------------
 
+The perror function also maps the current error, as reported in errno , into a string and prints it on the standard error stream.
+It’s preceded by the message given in the string s (if not NULL ), followed by a colon and a space.
 
+#include <stdio.h>
+
+void perror(const char *s);
+
+For example,
+
+perror("program");
+
+might give the following on the standard error output:
+
+program: Too many open files
