@@ -1,0 +1,56 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+------------
+|  getopt  |
+------------
+
+The getopt function takes the argc and argv parameters as passed to the program’s main function and an options specifier string that tells getopt what options are defined for the program and whether they have associated values.
+The optstring is simply a list of characters, each representing a single character option.
+If a character is followed by a colon, it indicates that the option has an associated value that will be taken as the next argument. The getopts command in bash performs a very similar function.
+
+#include <unistd.h>
+
+int getopt(int argc, char *const argv[], const char *optstring);
+
+extern char *optarg;
+extern int optind, opterr, optopt;
+
+-----------------
+|  getopt_long  |
+-----------------
+
+#include <stdio.h>
+#include <unistd.h>
+#include <getopt.h>
+
+int getopt_long (int argc, char *__getopt_argv_const *argv, const char *options, const struct option *long_options, int *opt_index);
+
+struct option
+{
+  const char *name;
+  /* has_arg can't be an enum because some compilers complain about
+     type mismatches in all the code that assumes it is an int.  */
+  int has_arg;
+  int *flag;
+  int val;
+};
+
+--------------------------------------------------------------------------------------------
+|  option      |  Description                                                              |
+--------------------------------------------------------------------------------------------
+|  name           The name of the long option.                                             |
+|                 Abbreviations will be accepted as long as they cannot be confused with   |
+|                 other options.                                                           |
+--------------------------------------------------------------------------------------------
+|  has_arg        Whether this option takes an argument.                                   |
+|                 Set to 0 for options that do not take an argument, 1 for options         |
+|                 that must have a value, and 2 for those that have an optional argument.  |
+--------------------------------------------------------------------------------------------
+|  flag           Set to NULL to have getopt_long return the value given in val            |
+|                 when this option is found.                                               |
+|                 Otherwise, getopt_long returns 0 and writes the value of val into        |
+|                 the variable pointed to by flag .                                        |
+--------------------------------------------------------------------------------------------
+|  val            The value getopt_long is to return for this option.                      |
+--------------------------------------------------------------------------------------------

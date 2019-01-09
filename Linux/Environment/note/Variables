@@ -1,0 +1,36 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+--------------------
+|  getenv  putenv  |
+--------------------
+
+The environment consists of strings of the form name=value .
+The getenv function searches the environment for a string with the given name and returns the value associated with that name.
+It will return null if the requested variable doesn’t exist.
+If the variable exists but has no value, getenv succeeds with a string, the first byte of which is null .
+The string returned by getenv , and held in static storage provided by getenv , mustn’t be overwritten by the application, as it will by any subsequent calls to getenv .
+
+The putenv function takes a string of the form name=value and adds it to the current environment.
+It will fail and return -1 if it can’t extend the environment due to lack of available memory.
+When this happens, the error variable errno will be set to ENOMEM .
+
+#include <stdlib.h>
+
+char *getenv(const char *name);
+
+int putenv(const char *string);
+
+---------------
+|  environ    |
+---------------
+
+As we’ve seen, the program environment is made up of strings of the form name=value .
+This array of strings is made available to programs directly via the environ variable, which is declared as
+
+#include <stdlib.h>
+
+extern char **environ;
+
+
+
