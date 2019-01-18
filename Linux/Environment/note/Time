@@ -5,12 +5,25 @@
 |  time  |
 ----------
 
+You can find the low-level time value by calling the time function, which returns the number of seconds since the start of the epoch.
+It will also write the returned value to a location pointed to by tloc , if this isn’t a null pointer.
 
 #include <time.h>
 
 time_t time(time_t *tloc);
 
 
+--------------
+|  difftime  |
+--------------
+
+The difftime function calculates the difference between two time values and returns the value time1-time2 as a floating-point number.
+For Linux, the return value from time is a number of seconds and can be manipulated, but for the ultimate in portability you should use difftime .
+To present the time and date in a more meaningful way (to humans), we need to convert the time value into a recognizable time and date. There are standard functions to help with this.
+
+#include <time.h>
+
+double difftime(time_t time1, time_t time2);
 
 
 
