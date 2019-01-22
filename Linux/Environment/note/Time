@@ -26,4 +26,149 @@ To present the time and date in a more meaningful way (to humans), we need to co
 double difftime(time_t time1, time_t time2);
 
 
+--------------
+|  gmtime    |
+--------------
 
+The function gmtime breaks down a low-level time value into a structure containing more usual fields
+
+#include <time.h>
+
+struct tm *gmtime(const time_t timeval);
+
+------------------------------------------------------------
+|  tm Member   |  Description                              |
+------------------------------------------------------------
+|int tm_sec        Seconds, 0-61                           |
+------------------------------------------------------------
+|int tm_min        Minutes, 0-59                           |
+------------------------------------------------------------
+|int tm_hour       Hours, 0-23                             |
+------------------------------------------------------------
+|int tm_mday       Day in the month, 1-31                  |
+------------------------------------------------------------
+|int tm_mon        Month in the year, 0-11 (January = 0)   |
+------------------------------------------------------------
+|int tm_year       Years since 1900                        |
+------------------------------------------------------------
+|int tm_wday       Day in the week, 0-6 (Sunday = 0)       |
+------------------------------------------------------------
+|int tm_yday       Day in the year, 0-365                  |
+------------------------------------------------------------
+|int tm_isdst      Daylight savings in effect              |
+------------------------------------------------------------
+
+
+-----------------
+|  localtime    |
+-----------------
+
+The localtime function is identical to gmtime , except that it returns a structure containing values adjusted for local time zone and daylight savings.
+If you try the gmtime program again, but use localtime in place of gmtime , you should see a correct time and date reported.
+
+#include <time.h>
+
+struct tm *localtime(const time_t *timeval);
+
+
+--------------
+|  mktime    |
+--------------
+
+To convert a broken-down tm structure into a raw time_t value, you can use the function mktime
+
+#include <time.h>
+
+time_t mktime(struct tm *timeptr);
+
+---------------
+|  asctime    |
+---------------
+
+The asctime function returns a string that represents the time and date given by the tm structure timeptr .
+
+#include <time.h>
+
+char *asctime(const struct tm *timeptr);
+char *ctime(const time_t *timeval);
+
+---------------
+|  strftime   |
+---------------
+
+The strftime function formats the time and date represented by the tm structure pointed to by timeptr and places the result in the string s .
+This string is specified as (at least) maxsize characters long.
+The format string is used to control the characters written to the string. Like printf , it contains ordinary characters that will be transferred to the string and conversion specifiers for formatting time and date elements.
+
+#include <time.h>
+
+size_t strftime(char *s, size_t maxsize, const char *format, struct tm *timeptr);
+
+----------------------------------------------------------------------------------------------
+|  Conversion Specifier   |  Description                                                     |
+----------------------------------------------------------------------------------------------
+|  %a                        Abbreviated weekday name                                        |
+----------------------------------------------------------------------------------------------
+|  %A                        Full weekday name                                               |
+----------------------------------------------------------------------------------------------
+|  %b                        Abbreviated month name                                          |
+----------------------------------------------------------------------------------------------
+|  %B                        Full month name                                                 |
+----------------------------------------------------------------------------------------------
+|  %c                        Date and time                                                   | 
+----------------------------------------------------------------------------------------------
+|  %d                        Day of the month, 01-31                                         |
+----------------------------------------------------------------------------------------------
+|  %H                        Hour, 00-23                                                     |
+----------------------------------------------------------------------------------------------
+|  %I                        Hour in 12-hour clock, 01-12                                    |
+----------------------------------------------------------------------------------------------
+|  %j                        Day of the year, 001-366                                        |
+----------------------------------------------------------------------------------------------
+|  %m                        Month of the year, 01-12                                        |
+----------------------------------------------------------------------------------------------
+|  %M                        Minutes, 00-59                                                  |
+----------------------------------------------------------------------------------------------
+|  %p                        a.m. or p.m.                                                    |
+----------------------------------------------------------------------------------------------
+|  %S                        Seconds, 00-61                                                  |
+----------------------------------------------------------------------------------------------
+|  %u                        Day in the week, 1-7 (1 = Monday)                               |
+----------------------------------------------------------------------------------------------
+|  %U                        Week in the year, 01-53 (Sunday is the first day of the week.)  |
+----------------------------------------------------------------------------------------------
+|  %V                        Week in the year, 01-53 (Monday is the first day of the week.)  |
+----------------------------------------------------------------------------------------------
+|  %w                        Day in the week, 0-6 (0 = Sunday)                               |
+----------------------------------------------------------------------------------------------
+|  %x                        Date in local format                                            |
+----------------------------------------------------------------------------------------------
+|  %X                        Time in local format                                            |
+----------------------------------------------------------------------------------------------
+|  %y                        Year number less 1900                                           |
+----------------------------------------------------------------------------------------------
+|  %Y                        Year                                                            |
+----------------------------------------------------------------------------------------------
+|  %Z                        Time zone name                                                  |
+----------------------------------------------------------------------------------------------
+|  %%                        A % character                                                   |
+----------------------------------------------------------------------------------------------
+
+
+---------------
+|  strptime   |
+---------------
+
+The format string is constructed in exactly the same way as the format string for strftime .
+strptime acts in a similar way to sscanf in that it scans a string, looking for identifiable fields, and writes them into variables.
+Here it’s the members of a tm structure that are filled in according to the format string.
+However, the conversion specifiers for strptime are a little more relaxed than those for strftime because strptime will allow both abbreviated and full names for days and months.
+Either representation will match a %a specifier in strptime .
+Also, where strftime always uses leading zeros on numbers less than 10, strptime regards them as optional.
+strptime returns a pointer to the character following the last one consumed in the conversion process.
+If it encounters characters that can’t be converted, the conversion simply stops at that point.
+The calling program needs to check that enough of the passed string has been consumed to ensure that meaningful values have been written to the tm structure.
+
+#include <time.h>
+
+char *strptime(const char *buf, const char *format, struct tm *timeptr);
