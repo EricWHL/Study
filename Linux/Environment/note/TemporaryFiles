@@ -1,0 +1,34 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+------------
+|  tmpnam  |
+------------
+
+The tmpnam function returns a valid filename that isn’t the same as any existing file.
+If the string s isn’t null , the filename will also be written to it.
+Further calls to tmpnam will overwrite the static storage used for return values, so it’s essential to use a string parameter if tmpnam is to be called many times.
+The string is assumed to be at least L_tmpnam characters long.
+tmpnam can be called up to TMP_MAX times in a single program, and it will generate a different filename each time.
+If the temporary file is to be used immediately, you can name it and open it at the same time using the
+tmpfile function.
+This is important because another program could create a file with the same name as that returned by tmpnam .
+The tmpfile function avoids this problem altogether
+
+#include <stdio.h>
+
+char *tmpnam(char *s);
+
+
+------------
+|  tmpfile |
+------------
+
+The tmpfile function returns a stream pointer that refers to a unique temporary file.
+The file is opened for reading and writing (via fopen with w+ ), and it will be automatically deleted when all references to the file are closed.
+
+#include <stdio.h>
+
+FILE *tmpfile(void);
+
+
