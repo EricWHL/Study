@@ -1,0 +1,103 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+-------------
+|  getuid   |
+|  getlogin |
+-------------
+
+The getuid function returns the UID with which the program is associated.
+This is usually the UID of the user who started the program.
+The getlogin function returns the login name associated with the current user.
+
+#include <sys/types.h>
+#include <unistd.h>
+
+uid_t getuid(void);
+char *getlogin(void);
+
+The system file /etc/passwd contains a database dealing with user accounts.
+It consists of lines, one per user, that contain the username, encrypted password, user identifier (UID), group identifier (GID), full name, home directory, and default shell.
+Here’s an example line:
+neil:zBqxfqedfpk:500:100:Neil Matthew:/home/neil:/bin/bash
+
+
+-------------
+|  getpwuid |
+|  getpwnam |
+-------------
+
+If we write a program that determines the UID of the user who started it, we could extend it to look in the password file to find out the user’s login name and full name.
+We don’t recommend this because modern UNIX-like systems are moving away from using simple password files to improve system security.
+Many systems, including Linux, have the option to use shadow password files that don’t contain any useful encrypted password information at all (this is often held in /etc/shadow , a file that ordinary users can-not read).
+For this reason, a number of functions have been defined to provide a standard and effective programming interface to this user information:
+
+#include <sys/types.h>
+#include <pwd.h>
+
+struct passwd *getpwuid(uid_t uid);
+struct passwd *getpwnam(const char *name);
+
+----------------------------------------------------
+|  passwd Member   |  Description                  |
+----------------------------------------------------
+|  char *pw_name      The user’s login name        |
+----------------------------------------------------
+|  uid_t pw_uid       The UID number               |
+----------------------------------------------------
+|  gid_t pw_gid       The GID number               |
+----------------------------------------------------
+|  char *pw_dir       The user’s home directory    |
+----------------------------------------------------
+|  char *pw_gecos     The user’s full name         |
+----------------------------------------------------
+|  char *pw_shell     The user’s default shell     |
+----------------------------------------------------
+
+
+-------------
+|  endpwent |
+|  getpwent |
+|  setpwent |
+-------------
+
+To scan all the password file information, we can use the getpwent function. This fetches successive file entries:
+
+The getpwent function returns each user information entry in turn.
+When none remain, it returns a null pointer.
+We can use the endpwent function to terminate processing once sufficient entries have been scanned.
+The setpwent function resets the position in the password file to the start so that a new scan can be started with the next call to getpwent .
+
+#include <pwd.h>
+#include <sys/types.h>
+
+void endpwent(void);
+struct passwd *getpwent(void);
+void setpwent(void);
+
+
+-------------
+|  geteuid  |
+|  getgid   |
+|  getegid  |
+-------------
+
+#include <sys/types.h>
+#include <unistd.h>
+
+uid_t geteuid(void);
+gid_t getgid(void);
+gid_t getegid(void);
+
+-------------
+|  setuid   |
+|  setgid   |
+-------------
+
+Only the superuser may call setuid and setgid .
+
+#include <sys/types.h>
+#include <unistd.h>
+
+int setuid(uid_t uid);
+int setgid(gid_t gid);

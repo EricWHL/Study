@@ -1,0 +1,54 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+------------------
+|  gethostname   |
+------------------
+
+The gethostname function writes the machine’s network name into the string name .
+This string is assumed to be at least namelen characters long. gethostname returns 0 if successful and -1 otherwise.
+
+#include <unistd.h>
+
+int gethostname(char *name, size_t namelen);
+
+------------------
+|  gethostid     |
+------------------
+
+The gethostid function is intended to return a unique value for the host computer.
+License managers use this to ensure that software programs can run only on machines that hold valid licenses.
+On Sun workstations, it returns a number that is set in non-volatile memory when the computer is built, and so, is unique to the system hardware.
+
+#include <unistd.h>
+
+long gethostid(void);
+
+
+-----------
+| uname   |
+-----------
+
+Obtain more detailed information about the host computer from the uname system call
+
+#include <sys/utsname.h>
+
+int uname(struct utsname *name);
+
+The uname function writes host information into the structure pointed to by the name parameter.
+The utsname structure, defined in sys/utsname.h , must contain at least these members:
+
+----------------------------------------------------------
+|  utsname Member   |  Description                       |
+----------------------------------------------------------
+|  char sysname[]      The operating system name         |
+----------------------------------------------------------
+|  char nodename[]     The host name                     |
+----------------------------------------------------------
+|  char release[]      The release level of the system   |
+----------------------------------------------------------
+|  char version[]      The version number of the system  |
+----------------------------------------------------------
+|  char machine[]      The hardware type                 |
+----------------------------------------------------------
+
