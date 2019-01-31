@@ -1,0 +1,143 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+------------------
+|   getpriority  |
+------------------
+
+#include <sys/resource.h>
+
+int getpriority(int which, id_t who);
+
+-------------------------------------------------------------------------------
+|  who Constant     |  Description                                            |
+-------------------------------------------------------------------------------
+|  RUSAGE_SELF         Returns usage information about current program only.  |
+-------------------------------------------------------------------------------
+|  RUSAGE_CHILDREN     Includes usage information of child processes as well. |
+-------------------------------------------------------------------------------
+
+---------------------------------------------------------
+|  which Parameter     |  Description                   |
+---------------------------------------------------------
+|  PRIO_PROCESS           who is a process identifier.  |
+---------------------------------------------------------
+|  PRIO_PGRP              who is a process group.       |
+---------------------------------------------------------
+|  PRIO_USER              who is a user identifier.     |
+---------------------------------------------------------
+
+So, to determine the priority of the current process, you might call
+priority = getpriority(PRIO_PROCESS, getpid());
+
+------------------
+|   setpriority  |
+------------------
+The default priority is 0.
+
+Positive priorities are used for background tasks that run when no other higher priority task is ready to run.
+
+Negative priorities cause a program to run more frequently, taking a larger share of the available CPU time.
+
+The range of valid priorities is -20 to +20. This is often confusing because the higher the numerical value, the lower the execution precedence.
+
+getpriority returns a valid priority if successful or a –1 with errno set on error. Because –1 is itself a valid priority, errno should be set to zero before calling getpriority and checked that it’s still zero on return.
+
+setpriority returns 0 if successful, –1 otherwise.
+
+#include <sys/resource.h>
+
+int setpriority(int which, id_t who, int priority);
+
+-------------------------------------------------------------------------------
+|  who Constant     |  Description                                            |
+-------------------------------------------------------------------------------
+|  RUSAGE_SELF         Returns usage information about current program only.  |
+-------------------------------------------------------------------------------
+|  RUSAGE_CHILDREN     Includes usage information of child processes as well. |
+-------------------------------------------------------------------------------
+
+---------------------------------------------------------
+|  which Parameter     |  Description                   |
+---------------------------------------------------------
+|  PRIO_PROCESS           who is a process identifier.  |
+---------------------------------------------------------
+|  PRIO_PGRP              who is a process group.       |
+---------------------------------------------------------
+|  PRIO_USER              who is a user identifier.     |
+---------------------------------------------------------
+
+
+------------------
+|   getrlimit    |
+------------------
+
+#include <sys/resource.h>
+
+int getrlimit(int resource, struct rlimit *r_limit);
+----------------------------------------------------------
+|  rlimit Member         |  Description                  |
+----------------------------------------------------------
+|  rlim_t rlim_cur          The current, soft limit      |
+----------------------------------------------------------
+|  rlim_t rlim_max          The hard limit               |
+----------------------------------------------------------
+
+------------------
+|   setrlimit    |
+------------------
+
+#include <sys/resource.h>
+
+int setrlimit(int resource, const struct rlimit *r_limit);
+
+-----------------------------------------------------------------------------------
+|  resource Parameter   |  Description                                            |
+-----------------------------------------------------------------------------------
+|  RLIMIT_CORE             The core dump file size limit, in bytes                |
+-----------------------------------------------------------------------------------
+|  RLIMIT_CPU              The CPU time limit, in seconds                         |
+-----------------------------------------------------------------------------------
+|  RLIMIT_DATA             The data () segment limit, in bytes                    |
+-----------------------------------------------------------------------------------
+|  RLIMIT_FSIZE            The file size limit, in bytes                          |
+-----------------------------------------------------------------------------------
+|  RLIMIT_NOFILE           The limit on the number of open files                  |
+-----------------------------------------------------------------------------------
+|  RLIMIT_STACK            The limit on stack size, in bytes                      |
+-----------------------------------------------------------------------------------
+|  RLIMIT_AS               The limit on address space (stack and data), in bytes  |
+-----------------------------------------------------------------------------------
+
+
+------------------
+|   getrusage    |
+------------------
+
+#include <sys/resource.h>
+
+int getrusage(int who, struct rusage *r_usage);
+The rusage structure, defined in sys/resource.h , is used to determine how much CPU time has been used by the current program.
+
+It must contain at least the following two members:
+
+-------------------------------------------------------------------------------
+|  who Constant     |  Description                                            |
+-------------------------------------------------------------------------------
+|  RUSAGE_SELF         Returns usage information about current program only.  |
+-------------------------------------------------------------------------------
+|  RUSAGE_CHILDREN     Includes usage information of child processes as well. |
+-------------------------------------------------------------------------------
+
+----------------------------------------------------------
+|  rusage Member               |  Description            |
+----------------------------------------------------------
+|  struct timeval ru_utime        The user time used     |
+----------------------------------------------------------
+|  struct timeval ru_stime        The system time used   |
+----------------------------------------------------------
+The timeval structure is defined in sys/time.h and contains fields tv_sec and tv_usec , representing seconds and microseconds, respectively.
+
+CPU time consumed by a program is separated into user time (the time that the program itself has consumed executing its own instructions) and system time (the CPU time consumed by the operating system on the program’s behalf; that is, the time spent in system calls performing input and output or other system functions).
+
+

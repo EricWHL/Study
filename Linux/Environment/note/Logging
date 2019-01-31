@@ -1,0 +1,84 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+-------------
+|  syslog   |
+-------------
+
+The syslog function sends a logging message to the logging facility.
+Each message has a priority argument that is a bitwise OR of a severity level and a facility value.
+The severity level controls how the log message is acted upon and the facility value records the originator of the message.
+Facility values (from syslog.h ) include LOG_USER , used to indicate that the message has come from a user application (the default), and LOG_LOCAL0 , LOG_LOCAL1 , up to LOG_LOCAL7 , which can be assigned meanings by the local administrator.
+
+#include <syslog.h>
+
+void syslog(int priority, const char *message, arguments...);
+
+-------------------------------------------------------------------------------
+|  Priority Level      |  Description                                         |
+-------------------------------------------------------------------------------
+|  LOG_EMERG              An emergency situation                              |
+-------------------------------------------------------------------------------
+|  LOG_ALERT              High-priority problem, such as database corruption  |
+-------------------------------------------------------------------------------
+|  LOG_CRIT               Critical error, such as hardware failure            |
+-------------------------------------------------------------------------------
+|  LOG_ERR                Errors                                              |
+-------------------------------------------------------------------------------
+|  LOG_WARNING            Warning                                             |
+-------------------------------------------------------------------------------
+|  LOG_NOTICE             Special conditions requiring attention              |
+-------------------------------------------------------------------------------
+|  LOG_INFO               Informational messages                              |
+-------------------------------------------------------------------------------
+|  LOG_DEBUG              Debug messages                                      |
+-------------------------------------------------------------------------------
+
+
+---------------
+|  closelog   |
+|  openlog    |
+|  setlogmask |
+---------------
+
+You can alter the way that your log messages are presented by calling the openlog function.
+This allows you to set up a string, ident , which will be pre-pended to your log messages.
+You can use this to indicate which program is creating the message.
+The facility parameter records a default facility value to be used for future calls to syslog .
+The default is LOG_USER .
+The logopt parameter configures the behavior of future calls to syslog .
+It’s a bitwise OR of zero or more of the parameters in the following table.
+
+#include <syslog.h>
+
+void closelog(void);
+void openlog(const char *ident, int logopt, int facility);
+int setlogmask(int maskpri);
+
+-----------------------------------------------------------------------------------------
+|  logopt Parameter    |  Description                                                   |
+-----------------------------------------------------------------------------------------
+|  LOG_PID                Includes the process identifier, a unique number              |
+|                         allocated to each process by the system, in the messages.     |
+-----------------------------------------------------------------------------------------
+|  LOG_CONS               Sends messages to the console if they can’t be logged.        |
+-----------------------------------------------------------------------------------------
+|  LOG_ODELAY             Opens the log facility at first call to syslog .              |
+-----------------------------------------------------------------------------------------
+|  LOG_NDELAY             Opens the log facility immediately, rather than at first log. |
+-----------------------------------------------------------------------------------------
+
+The openlog function will allocate and open a file descriptor that will be used for writing to the logging
+facility. You can close this by calling the closelog function. Note that you don’t need to call openlog
+before calling syslog because syslog will open the logging facility itself if required.
+
+You can control the priority level of your log messages by setting a log mask using setlogmask . All
+future calls to syslog with priority levels not set in the log mask will be rejected, so you could, for
+example, use this to turn off LOG_DEBUG messages without having to alter the body of the program.
+
+You can create the mask for log messages using LOG_MASK(priority) , which creates a mask consisting
+of just one priority level, or LOG_UPTO(priority) , which creates a mask consisting of all priorities up
+to and including the specified priority.
+
+
+
