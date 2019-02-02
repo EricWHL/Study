@@ -10,3 +10,165 @@ The isatty system call returns 1 if the open file descriptor, fd , is connected 
 #include <unistd.h>
 
 int isatty(int fd);
+
+termios is the standard interface specified by POSIX and is similar to the System V interface termio .
+The terminal interface is controlled by setting values in a structure of type termios and using a small set of function calls. Both are defined in the header file termios.h
+
+A minimum termios structure is typically declared as follows (although the X/Open specification allows additional fields to be included):
+
+#include <termios.h>
+
+struct termios {
+    tcflag_t c_iflag;/*input   model*/
+    tcflag_t c_oflag;/*output  model*/
+    tcflag_t c_cflag;/*control model*/
+    tcflag_t c_lflag;/*local   model*/
+    cc_t c_cc[NCCS]; /*input   model*/
+};
+
+---------------------------------------------------------------------
+|  c_iflag   |  Description                                         |
+---------------------------------------------------------------------
+|  BRKINT       Generate an interrupt when a break condition        |
+|                (loss of connection) is detected on the line       |
+--------------------------------------------------------------------- 
+|  IGNBRK       Ignore break conditions on the line                 |
+---------------------------------------------------------------------
+|  ICRNL        Convert a received carriage return to a newline     |
+---------------------------------------------------------------------
+|  IGNCR        Ignore received carriage returns                    |
+---------------------------------------------------------------------
+|  INLCR        Convert received newlines to carriage returns       |
+--------------------------------------------------------------------- 
+|  IGNPAR       Ignore characters with parity errors                |
+---------------------------------------------------------------------
+|  INPCK        Perform parity checking on received characters      |
+---------------------------------------------------------------------
+|  PARMRK       Mark parity errors                                  |
+---------------------------------------------------------------------
+|  ISTRIP       Strip (set to seven bits) all incoming characters   |
+---------------------------------------------------------------------
+|  IXOFF        Enable software flow control on input               |
+---------------------------------------------------------------------
+|  IXON         Enable software flow control on output              |
+---------------------------------------------------------------------
+If neither BRKINT nor IGNBRK is set, a break condition on the line is read as a NULL (0x00) character.
+
+---------------------------------------------------------------------
+|  c_oflag   |  Description                                         |
+---------------------------------------------------------------------
+|  OPOST        Turn on output processing                           |
+--------------------------------------------------------------------- 
+|  ONLCR        Convert any output newline to a carriage            |
+|               return/line feed pair                               |
+---------------------------------------------------------------------
+|  OCRNL        Convert any output carriage return to a newline     |
+---------------------------------------------------------------------
+|  ONOCR        No carriage return output in column 0               |
+---------------------------------------------------------------------
+|  ONLRET       A newline also does a carriage return               |
+---------------------------------------------------------------------
+|  OFILL        Send fill characters to provide delays              |
+---------------------------------------------------------------------
+|  OFDEL        Use DEL as a fill character, rather than NULL       |
+---------------------------------------------------------------------
+|  NLDLY        Newline delay selection                             |
+---------------------------------------------------------------------
+|  CRDLY        Carriage return delay selection                     |
+---------------------------------------------------------------------
+|  TABDLY       Tab delay selection                                 |
+---------------------------------------------------------------------
+|  BSDLY        Backspace delay selection                           |
+---------------------------------------------------------------------
+|  VTDLY        Vertical tab delay selection                        |
+---------------------------------------------------------------------
+|  FFDLY        Form feed delay selection                           |
+---------------------------------------------------------------------
+If OPOST is not set, all the other flags are ignored.
+
+---------------------------------------------------------------------
+|  c_cflag   |  Description                                         |
+---------------------------------------------------------------------
+|  CLOCAL       Ignore any modem status lines.                      |
+---------------------------------------------------------------------
+|  CREAD        Enable the receipt of characters.                   |
+---------------------------------------------------------------------
+|  CS5          Use five bits in sent or received characters.       |
+---------------------------------------------------------------------
+|  CS6          Use six bits in sent or received characters.        |
+---------------------------------------------------------------------
+|  CS7          Use seven bits in sent or received characters.      |
+---------------------------------------------------------------------
+|  CS8          Use eight bits in sent or received characters.      |
+---------------------------------------------------------------------
+|  CSTOPB       Use two stop bits per character, rather than one.   |
+---------------------------------------------------------------------
+|  HUPCL        Hang up modem on close.                             |
+---------------------------------------------------------------------
+|  PARENB       Enable parity generation and detection.             |
+---------------------------------------------------------------------
+|  PARODD       Use odd parity rather than even parity.             |
+---------------------------------------------------------------------
+If HUPCL is set, when the terminal driver detects that the last file descriptor referring to the terminal
+has been closed, it will set the modem control lines to “hang-up” the line.
+
+-----------------------------------------------------------------------
+|  c_lflag   |  Description                                           |
+-----------------------------------------------------------------------
+|  ECHO         Enable local echoing of input characters              |
+-----------------------------------------------------------------------
+|  ECHOE        Perform a Backspace, Space,                           |
+|               Backspace combination on receiving ERASE              |
+-----------------------------------------------------------------------
+|  ECHOK        Perform erase line on the KILL character              |
+-----------------------------------------------------------------------
+|  ECHONL       Echo newline characters                               |
+-----------------------------------------------------------------------
+|  ICANON       Enable canonical input processing                     |
+|               (see the text following this list)                    |
+-----------------------------------------------------------------------
+|  IEXTEN       Enable implementation-specific functions              |
+----------------------------------------------------------------------- 
+|  ISIG         Enable signals                                        |
+-----------------------------------------------------------------------
+|  NOFLSH       Disable flush on queue                                |
+-----------------------------------------------------------------------
+|  TOSTOP       Send background processes a signal on write attempts  |
+-----------------------------------------------------------------------
+
+
+
+
+
+----------------
+|  tcgetattr   |
+----------------
+
+This call writes the current values of the terminal interface variables into the structure pointed to by termios_p . 
+#include <termios.h>
+
+int tcgetattr(int fd, struct termios *termios_p);
+
+
+----------------
+|  tcsetattr   |
+----------------
+
+
+#include <termios.h>
+
+int tcsetattr(int fd, int actions, const struct termios *termios_p);
+
+-----------------------------------------------------------------
+|  actions   |  Description                                     |
+-----------------------------------------------------------------
+|  TCSANOW      Changes values immediately.                     |
+-----------------------------------------------------------------
+|  TCSADRAIN    Changes values when current output is complete. |
+-----------------------------------------------------------------
+|  TCSAFLUSH    Changes values when current output is complete, |
+|               but discards any input currently available and  |
+|               not yet returned in a read call.                |
+-----------------------------------------------------------------
+
+
