@@ -1,0 +1,12 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+-------------
+|  isatty   |
+-------------
+
+The isatty system call returns 1 if the open file descriptor, fd , is connected to a terminal and 0 otherwise.
+
+#include <unistd.h>
+
+int isatty(int fd);
