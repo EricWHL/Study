@@ -23,7 +23,7 @@ struct termios {
     tcflag_t c_oflag;/*output  model*/
     tcflag_t c_cflag;/*control model*/
     tcflag_t c_lflag;/*local   model*/
-    cc_t c_cc[NCCS]; /*input   model*/
+    cc_t c_cc[NCCS]; /*special control   model*/
 };
 
 ---------------------------------------------------------------------
@@ -135,10 +135,106 @@ has been closed, it will set the modem control lines to “hang-up” the line.
 -----------------------------------------------------------------------
 |  TOSTOP       Send background processes a signal on write attempts  |
 -----------------------------------------------------------------------
+The two most important flags here are ECHO , which allows you to suppress the echoing of typed characters, and ICANON , which switches the terminal between two very distinct modes of processing received characters.
+If the ICANON flag is set, the line is said to be in canonical mode;
+if not, the line is in non-canonical mode.
+
+For canonical mode, the array indices are:
+------------------------------
+| c_cc   |  Description      |
+------------------------------
+| VEOF      EOF character    |
+------------------------------
+| VEOL      EOL character    |
+------------------------------
+| VERASE    ERASE character  |
+------------------------------
+| VINTR     INTR character   |
+------------------------------
+| VKILL     KILL character   |
+------------------------------
+| VQUIT     QUIT character   |
+------------------------------
+| VSUSP     SUSP character   |
+------------------------------
+| VSTART    START character  |
+------------------------------
+| VSTOP     STOP character   |
+------------------------------
+
+For non-canonical mode, the array indices are:
+------------------------------
+| c_cc   |  Description      |
+------------------------------
+| VINTR     INTR character   |
+------------------------------
+| VMIN      MIN value        |
+------------------------------
+| VQUIT     QUIT character   |
+------------------------------
+| VSUSP     SUSP character   |
+------------------------------
+| VTIME     TIME value       |
+------------------------------
+| VSTART    START character  |
+------------------------------
+| VSTOP     STOP character   |
+------------------------------
 
 
+Characters
+Since the special characters and non-canonical MIN and TIME values are so important for more advanced input character processing
+------------------------------------------------------------------
+| Character   |  Description                                     |
+------------------------------------------------------------------
+| INTR           Causes the terminal driver to send a SIGINT     |
+|                signal to processes connected to the terminal.  |
+------------------------------------------------------------------
+| QUIT           Causes the terminal driver to send a SIGQUIT    |
+|                signal to processes connected to the terminal.  |
+------------------------------------------------------------------
+| ERASE          Causes the terminal driver to delete the last   |
+|                character on the line.                          |
+------------------------------------------------------------------
+| KILL           Causes the terminal driver to delete            |
+|                the entire line.                                |
+------------------------------------------------------------------
+| EOF            Causes the terminal driver to pass all          |
+|                characters on the line to the application       |
+|                reading input. If the line is empty, a read     |
+|                call will return zero characters as though a    |
+|                read had been attempted at the end of a file.   |
+------------------------------------------------------------------
+| EOL            Acts as a line terminator in addition to        |
+|                the more usual newline character.               |
+------------------------------------------------------------------
+| SUSP           Causes the terminal driver to send a SIGSUSP    |
+|                signal to processes connected to the terminal.  |
+|                If your UNIX supports job control, the current  |
+|                application will be suspended.                  |
+------------------------------------------------------------------
+| STOP           Acts to “flow off;” that is, prevent further    |
+|                output to the terminal. It’s used to support    |
+|                XON/XOFF flow control and is usually set to the |
+|                ASCII XOFF character, Ctrl+S.                   |
+------------------------------------------------------------------
+| START          Restarts output after a STOP character,         |
+|                often the ASCII XON character.                  |
+------------------------------------------------------------------
 
+The TIME and MIN Values
 
+The values of TIME and MIN are used only in non-canonical mode and act together to control the reading of input.
+Together, they control what happens when a program attempts to read a file descriptor associated with a terminal.
+
+There are four cases:
+❑ MIN = 0 and TIME = 0 : In this case, a read will always return immediately. If some characters are available, they will be returned;if none are available, read will return zero and no characters will have been read.
+
+❑ MIN = 0 and TIME > 0 : In this case, the read will return when any character is available to be read or when TIME tenths of a second have elapsed. If no character was read because the timer expired, read will return zero. Otherwise, it will return the number of characters read.
+
+❑ MIN > 0 and TIME = 0 : In this case, the read will wait until MIN characters can be read and then return that number of characters. Zero is returned on end of file.
+
+❑ MIN > 0 and TIME > 0: This is the most complex case. When read is called, it waits for a character to be received. When the first character is received, and every subsequent time a character is received, an inter-character timer is started (or restarted if it was already running). The read will return when either MIN characters can be read or the inter-character time of TIME tenths of a second expires. This can be useful for telling the difference between a single press of the Escape key and the start of a function key escape sequence. Be aware,though, that network communications or high processor loads neatly erase such fine timing information.
 
 ----------------
 |  tcgetattr   |
