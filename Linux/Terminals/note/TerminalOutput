@@ -1,0 +1,12 @@
+Using the termios structure, you have control over keyboard input, but it would be good to have the same level of control over the way a program’s output is presented on the screen.
+You used printf at the beginning of the chapter to output characters to the screen, but with no way of placing the output at a particular position on the screen.
+
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+
+
+
+
+
+

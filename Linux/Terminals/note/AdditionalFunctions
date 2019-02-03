@@ -1,0 +1,22 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+There are a small number of additional functions for the control of terminals.
+These work directly on file descriptors, without needing to get and set termios structures.
+
+#include <termios.h>
+
+int tcdrain(int fd);
+int tcflow(int fd, int flowtype);
+int tcflush(int fd, int in_out_selector);
+
+---------------------------------------------------------------
+|  Function   |  Description                                  |
+---------------------------------------------------------------
+|  tcdrain       causes the calling program to wait           |
+|                until all queued output has been sent.       |
+---------------------------------------------------------------
+|  tcflow        is used to suspend or restart output.        |
+---------------------------------------------------------------
+|  tcflush       can be used to flush input, output, or both. |
+---------------------------------------------------------------

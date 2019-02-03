@@ -1,0 +1,34 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+-------------
+|  speed    |
+-------------
+
+#include <termios.h>
+
+speed_t cfgetispeed(const struct termios *);
+speed_t cfgetospeed(const struct termios *);
+int cfsetispeed(struct termios *, speed_t speed);
+int cfsetospeed(struct termios *, speed_t speed);
+
+-----------------------------------------
+|  speed_t   |  Description             |
+-----------------------------------------
+|  B0           Hang up the terminal    |
+-----------------------------------------
+|  B1200        1200 baud               |
+-----------------------------------------
+|  B2400        2400 baud               |
+-----------------------------------------
+|  B9600        9600 baud               |
+-----------------------------------------
+|  B19200       19200 baud              |
+-----------------------------------------
+|  B38400       38400 baud              |
+-----------------------------------------
+
+Some systems, including Linux, define B57600 , B115200 , and B230400 for selecting faster speeds.
+If you’re using an earlier version of Linux and these constants are unavailable, you can use the command setserial to obtain nonstandard speeds of 57600 and 115200.
+In this case, these speeds will be used when B38400 is selected.
+Both of these methods are nonportable, so be careful when you’re using them.

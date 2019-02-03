@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <termios.h>
 
 char *menu[] = {
     "a - add new record",
@@ -10,6 +12,14 @@ char *menu[] = {
 
 int getchoice(char *greet, char *choices[], FILE *in, FILE *out);
 
+#if 0
+int func(a,b)
+int a;int b;
+{
+    return a+b;
+}
+#endif
+
 int main()
 {
     int choice = 0;
@@ -17,9 +27,15 @@ int main()
     FILE *input;
     FILE *output;
 
+    struct termios initial_settings, new_settings;
+    
     if(!isatty(fileno(stdout))) {
         fprintf(stderr,"You are not a terminal!\n");
     }
+
+#if 0
+    printf("func result:%d\n",func(1,2));
+#endif
 
     input = fopen("/dev/tty", "r");
     output = fopen("/dev/tty", "w");
@@ -28,13 +44,28 @@ int main()
         fprintf(stderr,"Unable to open /dev/tty\n");
         exit(1);
     }
-    
+
+    tcgetattr(fileno(input),&initial_settings);
+
+    new_settings = initial_settings;
+    new_settings.c_lflag &= ~ICANON;
+    new_settings.c_lflag &= ~ECHO;
+    new_settings.c_cc[VMIN] = 1;
+    new_settings.c_cc[VTIME] = 0;
+    new_settings.c_lflag &= ~ISIG;
+
+    if(tcsetattr(fileno(input), TCSANOW, &new_settings) != 0) {
+        fprintf(stderr,"could not set attributes\n");
+    }
+
     do {
         choice = getchoice("Please select an action", menu, input, output);
 
         printf("You have chosen: %c\n", choice);
     } while(choice != 'q');
 
+    tcsetattr(fileno(input),TCSANOW,&initial_settings);
+    
     exit(0);
 }
 
@@ -56,7 +87,7 @@ int getchoice(char *greet, char *choices[], FILE *in, FILE *out)
 
         do {
             selected = fgetc(in);
-        } while(selected == '\n');
+        } while(selected == '\n' || selected == '\r');
 
         selected = getchar();
         option = choices;
