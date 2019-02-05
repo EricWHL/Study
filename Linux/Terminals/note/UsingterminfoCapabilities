@@ -1,0 +1,29 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+---------------
+|  setupterm  |
+---------------
+The setupterm library function sets the current terminal type to that specified by the parameter term .
+If term is a null pointer, the TERM environment variable will be used. An open file descriptor to be used for writing to the terminal must be passed as fd .
+The function outcome is stored in the integer variable pointed to by errret , if this isn’t a null pointer.
+
+#include <term.h>
+
+int setupterm(char *term, int fd, int *errret);
+
+---------------------------------------------------------
+|  errret   |  Description                              |
+---------------------------------------------------------
+|  –1          No terminfo database                     |
+---------------------------------------------------------
+|  0           No matching entry in terminfo database   |
+---------------------------------------------------------
+|  1           Success                                  |
+---------------------------------------------------------
+
+
+
+
+
+
