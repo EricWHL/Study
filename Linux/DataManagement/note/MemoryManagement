@@ -1,0 +1,62 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+-------------
+|  malloc   |
+-------------
+Notice that Linux (following the X/Open specification) differs from some UNIX implementations by not requiring a special malloc.h include file.
+Note also that the size parameter that specifies the number of bytes to allocate isn’t a simple int , although it’s usually an unsigned integer type.
+
+#include <stdlib.h>
+
+void *malloc(size_t size);
+
+
+
+-----------
+|  free   |
+-----------
+Up to now, we’ve been simply allocating memory and then hoping that, when the program ends, the memory we’ve used hasn’t been lost.
+Fortunately, the Linux memory management system is quite capable of reliably ensuring that memory is returned to the system when a program ends.
+However, most programs don’t simply want to allocate some memory, use it for a short period, and then exit.
+A much more common use is dynamically using memory as required.
+
+Programs that use memory on a dynamic basis should always release unused memory back to the malloc memory manager using the free call.
+This allows separate blocks to be remerged and allows the malloc library to look after memory, rather than having the application manage it.
+If a running program (process) uses and then frees memory, that free memory remains allocated to the process.
+However, if it’s not being used, the Linux memory manager will be able to page it out from physical memory to swap space, where it has little impact on the use of resources.
+
+#include <stdlib.h>
+
+void free(void *ptr_to memory);
+
+-------------
+|  calloc   |
+|  realloc  |
+-------------
+Although calloc allocates memory that can be freed with free , it has somewhat different parameters:
+It allocates memory for an array of structures and requires the number of elements and the size of each element as its parameters.
+The allocated memory is filled with zeros, and if calloc is successful, a pointer to the first element is returned.
+Like malloc , subsequent calls are not guaranteed to return contiguous space, so you can’t enlarge an array created by calloc by simply calling calloc again and expecting the second call to return memory appended to that returned by the first call.
+
+#include <stdlib.h>
+
+void *calloc(size_t number_of_elements, size_t element_size);
+void *realloc(void *existing_memory, size_t new_size);
+
+The realloc function changes the size of a block of memory that has been previously allocated.
+It’s passed a pointer to some memory previously allocated by malloc , calloc , or realloc and resizes it up or down as requested.
+The realloc function may have to move data around to achieve this, so it’s important to ensure that once memory has been realloc ed, you always use the new pointer and never try to access the memory using pointers set up before realloc was called.
+
+Another problem to watch out for is that realloc returns a null pointer if it has been unable to resize the memory.
+This means that, in some applications, you should avoid writing code like this:
+
+my_ptr = malloc(BLOCK_SIZE);
+....
+my_ptr = realloc(my_ptr, BLOCK_SIZE * 10);
+
+If realloc fails, it will return a null pointer;
+my_ptr will point to null; and the original memory allocated with malloc can no longer be accessed via my_ptr .
+It may, therefore, be to your advantage to request the new memory first with malloc and then copy data from the old block to the new block using memcpy before free ing the old block.
+On error, this would allow the application to retain access to the data stored in the original block of memory, perhaps while arranging a clean termination of the program.
+

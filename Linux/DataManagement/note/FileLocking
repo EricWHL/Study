@@ -1,0 +1,26 @@
+---------------------------------
+|Interface descriptions         |
+---------------------------------
+-----------
+|  fcntl  |
+-----------
+
+#include <fcntl.h>
+
+int fcntl(int fildes, int command, ...);
+
+int fcntl(int fildes, int command, struct flock *flock_structure);
+------------------------------------------------------------------------
+|  command      |  Description                                         |
+------------------------------------------------------------------------
+|  F_GETLK      
+|  F_SETLK
+|  F_SETLKW
+
+
+
+
+
+
+
+
